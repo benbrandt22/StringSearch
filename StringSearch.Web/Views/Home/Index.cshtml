@@ -1,0 +1,75 @@
+﻿@using StringSearch.Math
+@using StringSearch.Shared
+@model StringSearch.Core.StringSearchPuzzle
+@{
+    ViewBag.Title = Model.Title;
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <h3>@Model.Title (@Model.Items.Count) </h3>
+    </div>
+</div>
+
+@{
+    double gridWidthPercent = 90;
+    double gridCellSize = (gridWidthPercent / Model.Grid.Columns);
+    double gridFontSize = (gridCellSize * 0.7);
+}
+
+
+<style>
+    table.stringSearchGrid {
+        table-layout: fixed;
+        width: @(gridWidthPercent)vw;
+        margin-bottom: 2em;
+    }
+
+    table.stringSearchGrid tr td {
+        width: @($"{gridCellSize}vw");
+        height: @($"{gridCellSize}vw");
+        font-size: @($"{gridFontSize}vw");
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .mathProblemPuzzleEntry .lineA, .mathProblemPuzzleEntry .lineB {
+        text-align: right
+    }
+
+    .mathProblemPuzzleEntry .lineAnswerBlank {
+        border-top: 1px solid black;
+        margin-bottom: 1em;
+    }
+</style>
+
+<table class="stringSearchGrid" border="0">
+    @for (int r = 0; r < Model.Grid.Rows; r++)
+    {
+        <tr>
+            @for (int c = 0; c < Model.Grid.Columns; c++)
+            {
+                <td>@Model.Grid.GetCell(r,c).Value</td>
+            }
+        </tr>
+    }
+</table>
+
+@foreach (var g in Model.Items.GroupByEvery(6))
+{
+    <div class="row">
+        @foreach (var item in g)
+        {
+            <div class="col-xs-2">
+                @if (item is MathProblemPuzzleEntry)
+                {
+                    @Html.DisplayFor(Model => item)
+                }
+                else
+                {
+                    <div class="small">@item.DisplayValue</div>
+                }
+            </div>
+        }
+    </div>
+}

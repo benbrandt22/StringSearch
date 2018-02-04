@@ -1,0 +1,13 @@
+﻿<h1>New word find:</h1>
+
+@using (Html.BeginForm("Words", "Home", FormMethod.Post))
+{
+    <p>
+        Title: @Html.TextBox("title")
+    </p>
+
+    @Html.TextArea("words", "", new { cols = "25", rows = "25" });
+    <p>
+        <button type="submit">Generate</button>    
+    </p>
+}
